@@ -1,0 +1,518 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BalancedFitWell",
+        "description": "This API is designed for use in the Outbound Integration Specialist Superbadge. It offers resources promote physical fitness, mental balance, and overall wellbeing among employees.",
+        "version": "1"
+    },
+    "paths": {
+        "/engagement-rate": {
+            "post": {
+                "operationId": "EvaluateEngagement",
+                "description": "Evaluates the engagement level of users in an org.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Submit engagement for the specific month for evaluation.",
+                                "type": "object",
+                                "required": ["engagement", "month"],
+                                "properties": {
+                                    "engagement": {
+                                        "description": "The ratio of active users of the wellness app in the month and total users in the org.",
+                                        "example": 0.6,
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "month": {
+                                        "example": "January",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "The API calculates the engagement level and provides a status and recommendation based on the calculated engagement.",
+                                    "example": {
+                                        "strict": true,
+                                        "value": {
+                                            "status": "Great",
+                                            "recommendation": "Using reminders can help to improve it further."
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": ["status", "recommendation"],
+                                    "properties": {
+                                        "status": {
+                                            "example": "Example",
+                                            "type": "string"
+                                        },
+                                        "recommendation": {
+                                            "example": "Example",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad Request",
+                                    "example": {
+                                        "strict": true,
+                                        "value": {
+                                            "code": 400,
+                                            "description": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": ["code", "description"],
+                                    "properties": {
+                                        "code": {
+                                            "example": 500,
+                                            "type": "integer",
+                                            "format": "int"
+                                        },
+                                        "description": {
+                                            "example": "Internal Server Error",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Internal Server Error",
+                                    "type": "object",
+                                    "required": ["code", "description"],
+                                    "properties": {
+                                        "code": {
+                                            "example": 500,
+                                            "type": "integer",
+                                            "format": "int"
+                                        },
+                                        "description": {
+                                            "example": "Internal Server Error",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/journey/completion": {
+            "post": {
+                "operationId": "SubmitCompletion",
+                "description": "Submit details of completed journey to get points.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "The request body should be in JSON format.",
+                                "type": "object",
+                                "required": ["name", "type", "points"],
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the journey that was completed.",
+                                        "example": "Appy's Aerobic Adventure",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "Indicates Physical or Mental journey is complete.",
+                                        "enum": ["Physical", "Mental"],
+                                        "example": "Physical",
+                                        "type": "string"
+                                    },
+                                    "completion-value": {
+                                        "description": "The value achieved upon completion of the journey.",
+                                        "example": 20,
+                                        "type": "integer",
+                                        "format": "int"
+                                    },
+                                    "completion-target": {
+                                        "description": "The target value that was aimed for in the journey.",
+                                        "example": 30,
+                                        "type": "integer",
+                                        "format": "int"
+                                    },
+                                    "points": {
+                                        "description": "The number of points earned for completing the journey.",
+                                        "example": 1500,
+                                        "type": "integer",
+                                        "format": "int"
+                                    },
+                                    "completed": {
+                                        "default": true,
+                                        "example": true,
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Points awarded for completion",
+                                    "type": "object",
+                                    "required": ["points"],
+                                    "properties": {
+                                        "points": {
+                                            "example": 500,
+                                            "type": "integer",
+                                            "format": "int"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad Request",
+                                    "example": {
+                                        "strict": true,
+                                        "value": {
+                                            "code": 400,
+                                            "description": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": ["code", "description"],
+                                    "properties": {
+                                        "code": {
+                                            "example": 500,
+                                            "type": "integer",
+                                            "format": "int"
+                                        },
+                                        "description": {
+                                            "example": "Internal Server Error",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Internal Server Error",
+                                    "type": "object",
+                                    "required": ["code", "description"],
+                                    "properties": {
+                                        "code": {
+                                            "example": 500,
+                                            "type": "integer",
+                                            "format": "int"
+                                        },
+                                        "description": {
+                                            "example": "Internal Server Error",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/journeys/{journeyType}": {
+            "get": {
+                "operationId": "GetJourneysByType",
+                "description": "Retrieves journeys based on the types: Physical and Mental",
+                "parameters": [
+                    {
+                        "name": "journeyType",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "enum": ["Physical", "Mental"],
+                            "example": "Physical",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Journey"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad Request",
+                                    "example": {
+                                        "strict": true,
+                                        "value": {
+                                            "code": 400,
+                                            "description": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": ["code", "description"],
+                                    "properties": {
+                                        "code": {
+                                            "example": 500,
+                                            "type": "integer",
+                                            "format": "int"
+                                        },
+                                        "description": {
+                                            "example": "Internal Server Error",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Internal Server Error",
+                                    "type": "object",
+                                    "required": ["code", "description"],
+                                    "properties": {
+                                        "code": {
+                                            "example": 500,
+                                            "type": "integer",
+                                            "format": "int"
+                                        },
+                                        "description": {
+                                            "example": "Internal Server Error",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rewards": {
+            "post": {
+                "operationId": "UserRewards",
+                "description": "Register users as reward recipients.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "example": {
+                                        "strict": true,
+                                        "value": {
+                                            "userId": "005XXXXXXXXXXXX",
+                                            "fullName": "John Doe",
+                                            "email": "john.doe@example.com",
+                                            "username": "john.doe@example.com"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": ["userId", "email", "username"],
+                                    "properties": {
+                                        "userId": {
+                                            "description": "A user ID from the Salesforce org.",
+                                            "example": "005XXXXXXXXXXXX",
+                                            "type": "string"
+                                        },
+                                        "fullName": {
+                                            "description": "The full name of the user.",
+                                            "example": "John Doe",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "The email address of the user.",
+                                            "example": "john.doe@example.com",
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "description": "Salesforce username of the user",
+                                            "example": "john.doe@example.com",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Success",
+                                    "example": {
+                                        "strict": true,
+                                        "value": {
+                                            "message": "Success"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": ["message"],
+                                    "properties": {
+                                        "message": {
+                                            "description": "Success",
+                                            "example": "Success",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad Request",
+                                    "example": {
+                                        "strict": true,
+                                        "value": {
+                                            "code": 400,
+                                            "description": "Bad Request"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": ["code", "description"],
+                                    "properties": {
+                                        "code": {
+                                            "example": 500,
+                                            "type": "integer",
+                                            "format": "int"
+                                        },
+                                        "description": {
+                                            "example": "Internal Server Error",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Journey": {
+                "description": "Various fitness and wellness activities. ",
+                "type": "object",
+                "required": ["name", "type", "points"],
+                "properties": {
+                    "name": {
+                        "description": "The name of the journey.",
+                        "example": "Appy's Aerobic Adventure",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Indicates the type of journey, either Physical or Mental.",
+                        "enum": ["Physical", "Mental"],
+                        "example": "Physical",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "A brief description of the journey.",
+                        "example": "An aerobic exercise challenge involving dance, Zumba, or aerobics routines.",
+                        "type": "string"
+                    },
+                    "accessible": {
+                        "description": "Indicates if the journey is accessible to everyone.",
+                        "default": true,
+                        "example": false,
+                        "type": "boolean"
+                    },
+                    "points": {
+                        "description": "The number of points that can be earned by completing the journey.",
+                        "example": 1500,
+                        "type": "integer",
+                        "format": "int"
+                    },
+                    "metric-type": {
+                        "description": "The type of metric used to measure the journey's progress.",
+                        "example": "Minutes",
+                        "type": "string"
+                    },
+                    "goal": {
+                        "description": "The completion goal for the journey, e.g., the number of minutes for a physical exercise challenge.",
+                        "example": 30,
+                        "type": "integer",
+                        "format": "int"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "required": ["code", "description"],
+                "properties": {
+                    "code": {
+                        "example": 500,
+                        "type": "integer",
+                        "format": "int"
+                    },
+                    "description": {
+                        "example": "Internal Server Error",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
