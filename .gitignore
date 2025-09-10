@@ -46,3 +46,15 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
+
+# other files to ignore
+.husky/
+.vscode/
+config/
+.forceignore
+.prettierignore
+eslint.config.js
+jest.config.js
+package-lock.json
+package.json
+sfdx-project.json
