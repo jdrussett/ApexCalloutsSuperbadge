@@ -1,11 +1,13 @@
 @SuppressWarnings('PMD.AvoidGlobalModifier,PMD.AvoidDebugStatements')
-global class WellnessJourneyRewardsBatch implements Database.Batchable<sObject> {
+global class WellnessJourneyRewardsBatch implements Database.Batchable<sObject>, Database.AllowsCallouts {
     global Database.QueryLocator start(Database.BatchableContext bc) {
+        // Database.executeBatch(new WellnessJourneyRewardsBatch());
+        System.debug('mydebug :: batch job starting');
         Date startDate = getStartDate();
         Date endDate = getEndDate();
 
         String query =
-            'SELECT Id,Name,OwnerId, Owner.Name, Owner.Email, Owner.Username ' +
+            'SELECT Id, Name, OwnerId, Owner.Name, Owner.Email, Owner.Username ' +
             'FROM Wellness_Journey__c ' +
             'WHERE Status__c = \'Complete\' AND Completion_Date__c >= :startDate AND Completion_Date__c <= :endDate ' +
             'ORDER BY OwnerId, Completion_Date__c';
@@ -49,7 +51,7 @@ global class WellnessJourneyRewardsBatch implements Database.Batchable<sObject> 
         }
 
         //Serialize JSON
-        String jsonBody;
+        String jsonBody = JSON.serialize(usersListMap);
 
         //Invoke Callout
         Integer responseCode = RewardsCalloutService.submitUsersForRewardCallout(jsonBody);
@@ -59,6 +61,7 @@ global class WellnessJourneyRewardsBatch implements Database.Batchable<sObject> 
 
     global void finish(Database.BatchableContext bc) {
         // Perform finish operations
+        System.debug('mydebug :: batch job finished');
     }
 
     // Helper methods to get the start and end date of the quarter
